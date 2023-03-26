@@ -3,7 +3,7 @@ function Card({card, onCardClick}) {
     onCardClick(card);
   } 
   return (
-    <div className="card" key={card._id}>
+    <div className="card">
       <img src={card.link} alt={card.name} className="card__image" onClick={handleClick}/>
       <button className="card__trash opacity"></button>
       <div className="card__elements">
