@@ -30,9 +30,9 @@ class Api {
     .then((res) => this._handleResponse(res));
   }
 
-  enableLikeCounting(request, cardId) {
+  enableLikeCounting(isLiked, cardId) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: request,
+      method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers,
     })
     .then(err => {

@@ -1,41 +1,22 @@
-import React, { useState } from "react";
-import api from "../utils/api.js";
+import { useContext } from "react";
 import Card from "./Card.js";
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
-function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
+function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete, cards}) {
 
-  React.useEffect(() => {
-    Promise.all([
-      api.getUserData(),
-      api.getCards()  
-    ])
-    .then((res) => {
-      const [ resUserData, resCardsArray ] = res;
-      setUserName(resUserData.name);
-      setUserDescription(resUserData.about);
-      setUserAvatar(resUserData.avatar);
-      setCards(resCardsArray);
-    })
-    .catch((error) => {
-      console.log(`Ошибка ${error} при добавлении карточек`)
-    });
-  }, [])
+  const user = useContext(CurrentUserContext);
 
   return (
     <main className="main">
       <section className="profile">
         <div className="profile__info">
           <button className="profile__edit-avatar" onClick={onEditAvatar}>
-            <img src={userAvatar} alt="Аватар" className="profile__avatar"/>
+            <img src={user.avatar} alt="Аватар" className="profile__avatar"/>
           </button>
           <div className="profile__first-line">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{user.name}</h1>
             <button className="profile__edit-button opacity" onClick={onEditProfile}></button>
-            <p className="profile__title">{userDescription}</p>
+            <p className="profile__title">{user.about}</p>
           </div>
         </div>
         <button className="profile__add-button opacity" onClick={onAddPlace}></button>
@@ -50,6 +31,8 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
             likes={card.likes}
             key={card._id}
             onCardClick={onCardClick}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
             ></Card>
           )
         })}
