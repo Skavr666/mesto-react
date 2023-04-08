@@ -36,25 +36,47 @@ function App() {
     });
   }, []);
 
+  const handleEscClose = (e) => {
+    if(e.key === 'Escape') {
+      closeAllPopups();
+    }
+  };
+
+  const handleSideClick = (e) => {
+    if(e.target.classList.contains('popup')) {
+      closeAllPopups();
+    }
+  };
+
+  function enableAdditionalListeners() {
+    document.addEventListener('keyup', handleEscClose);
+    document.addEventListener('click', handleSideClick);
+  };
+ 
   function handleCardClick(card) {
     setSelectedCard(card);
+    enableAdditionalListeners();
   };
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
+    enableAdditionalListeners();
   };
   
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
+    enableAdditionalListeners();
   };
   
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
+    enableAdditionalListeners();
   };
 
   function handleDeleteClick(cardId) {
     setCardId(cardId);
     setIsConfirmationPopupOpen(true);
+    enableAdditionalListeners();
   };
 
   function closeAllPopups() {
@@ -64,6 +86,8 @@ function App() {
     setIsConfirmationPopupOpen(false);
     setSelectedCard({name: '', link: ''});
     setCardId({});
+    document.removeEventListener('keyup', handleEscClose);
+    document.removeEventListener('click', handleSideClick);
   };
 
   function handleCardLike(card) {
